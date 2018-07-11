@@ -4,6 +4,7 @@ import ARKit
 class ViewController: UIViewController, ARSCNViewDelegate {
 
     @IBOutlet weak var sceneView: ARSCNView!
+    @IBOutlet weak var draw: UIButton!
     
     let configuration = ARWorldTrackingConfiguration()
 
@@ -39,11 +40,32 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // now we can get the current position
         let currentPositionOfCamera = orientation + location
-
-        // the orientation is reversed, so a negative is needed
-        print(orientation.x, orientation.y, orientation.z)
         
-        // you left off at #28
+        DispatchQueue.main.async {
+            if self.draw.isHighlighted {
+                let node01 = SCNNode()
+                node01.geometry = SCNSphere(radius: 0.02)
+                node01.geometry?.firstMaterial?.diffuse.contents = UIColor.red
+                node01.position = currentPositionOfCamera
+                
+                self.sceneView.scene.rootNode.addChildNode(node01)
+            } else {
+                let pointer = SCNNode()
+                pointer.geometry = SCNSphere(radius: 0.01)
+                pointer.name = "pointer"
+                pointer.geometry?.firstMaterial?.diffuse.contents = UIColor.orange
+                pointer.position = currentPositionOfCamera
+                
+                // we have to delete what was there before, otherwise the pointer gives a line
+                self.sceneView.scene.rootNode.enumerateChildNodes { (node, _) in
+                    if node.name == "pointer" {
+                        node.removeFromParentNode()
+                    }
+                }
+                
+                self.sceneView.scene.rootNode.addChildNode(pointer)
+            }
+        }
     }
 
 }

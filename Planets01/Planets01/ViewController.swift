@@ -16,7 +16,7 @@ class ViewController: UIViewController {
         let sunNode = SCNNode()
         sunNode.geometry = SCNSphere(radius: 0.35)
         sunNode.geometry?.firstMaterial?.diffuse.contents = #imageLiteral(resourceName: "Sundiffuse")
-        sunNode.position = SCNVector3(0,0,-1.0)
+        sunNode.position = SCNVector3(0,0,-3.0)
         self.sceneView.scene.rootNode.addChildNode(sunNode)
         
         let earthParent = SCNNode()
@@ -41,6 +41,17 @@ class ViewController: UIViewController {
         let foreverVenus = SCNAction.repeatForever(venusAction)
         earthParent.runAction(foreverEarth)
         venusParent.runAction(foreverVenus)
+        
+//        let earthMoonParent = SCNNode()
+//        self.sceneView.scene.rootNode.addChildNode(earthMoonParent)
+//        earthMoonParent.position = earth.position
+        
+        let earthMoon = createPlanetaryBody(geometry: SCNSphere(radius: 0.03), diffuse: #imageLiteral(resourceName: "EarthMoonDiffuse"), specular: nil, emission: nil, normal: nil, position: SCNVector3(0.3,0,0))
+        earth.addChildNode(earthMoon)
+        
+        let earthMoonAction = SCNAction.rotateBy(x: 0, y: CGFloat(360.degreesToRadians), z: 0, duration: 2)
+        let foreverEarthMoon = SCNAction.repeatForever(earthMoonAction)
+        earth.runAction(foreverEarthMoon)
     }
     
     func createPlanetaryBody(geometry:SCNGeometry, diffuse:UIImage, specular:UIImage?, emission:UIImage?, normal:UIImage?, position:SCNVector3) -> SCNNode {

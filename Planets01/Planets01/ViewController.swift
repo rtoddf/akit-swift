@@ -5,6 +5,10 @@ class ViewController: UIViewController {
     @IBOutlet weak var sceneView: ARSCNView!
     let configuration = ARWorldTrackingConfiguration()
     
+    var planetObjects = [planetaryObject]()
+    var planets = [SCNNode]()
+    var earth2 = planetaryObject(name: "earth", geometry: SCNSphere(radius: 0.03959), diffuseImage: #imageLiteral(resourceName: "EarthDiffuse"), specularImage: #imageLiteral(resourceName: "EarthSpecular"), emissionImage: #imageLiteral(resourceName: "EarthEmission"), normalImage: #imageLiteral(resourceName: "EarthNormal"), position: SCNVector3(1.2,0,0))
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -13,6 +17,24 @@ class ViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        
+        let earth2 = planetaryObject(name: "earth", geometry: SCNSphere(radius: 0.03959), diffuseImage: #imageLiteral(resourceName: "EarthDiffuse"), specularImage: #imageLiteral(resourceName: "EarthSpecular"), emissionImage: #imageLiteral(resourceName: "EarthEmission"), normalImage: #imageLiteral(resourceName: "EarthNormal"), position: SCNVector3(1.2,0,0))
+        let venus2 = planetaryObject(name: "venus", geometry: SCNSphere(radius: 0.03760), diffuseImage: #imageLiteral(resourceName: "VenusDiffuse"), specularImage: nil, emissionImage: #imageLiteral(resourceName: "VenusSpecular"), normalImage: nil, position: SCNVector3(0.7,0,0))
+        
+        self.planetObjects.append(earth2)
+        self.planetObjects.append(venus2)
+        
+        for planet in self.planetObjects {
+            let planet:SCNNode = createPlanetaryBody(geometry: planet.geometry, diffuse: planet.diffuseImage, specular: planet.specularImage, emission: planet.emissionImage, normal: planet.normalImage, position: planet.position)
+            
+            print("one: \(planet)")
+            
+            self.planets.append(planet)
+        }
+        
+        print("planets: \(self.planets)")
+//        print(planetObjects)
+        
         let sunNode = SCNNode()
         sunNode.geometry = SCNSphere(radius: 0.432)
         sunNode.geometry?.firstMaterial?.diffuse.contents = #imageLiteral(resourceName: "SunDiffuse")

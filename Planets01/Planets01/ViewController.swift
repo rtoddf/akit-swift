@@ -14,8 +14,8 @@ class ViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         let sunNode = SCNNode()
-        sunNode.geometry = SCNSphere(radius: 0.35)
-        sunNode.geometry?.firstMaterial?.diffuse.contents = #imageLiteral(resourceName: "Sundiffuse")
+        sunNode.geometry = SCNSphere(radius: 0.432)
+        sunNode.geometry?.firstMaterial?.diffuse.contents = #imageLiteral(resourceName: "SunDiffuse")
         sunNode.position = SCNVector3(0,0,-3.0)
         self.sceneView.scene.rootNode.addChildNode(sunNode)
         
@@ -26,8 +26,8 @@ class ViewController: UIViewController {
         earthParent.position = sunNode.position
         venusParent.position = sunNode.position
         
-        let earth = createPlanetaryBody(geometry: SCNSphere(radius: 0.2), diffuse: #imageLiteral(resourceName: "Earthday"), specular: #imageLiteral(resourceName: "Earthspecular"), emission: #imageLiteral(resourceName: "Earthclouds"), normal: #imageLiteral(resourceName: "Earthnormal"), position: SCNVector3(1.2,0,0))
-        let venus = createPlanetaryBody(geometry: SCNSphere(radius: 0.1), diffuse: #imageLiteral(resourceName: "VenusDiffuse"), specular: nil, emission: #imageLiteral(resourceName: "VenusSpecular"), normal: nil, position: SCNVector3(0.7,0,0))
+        let earth = createPlanetaryBody(geometry: SCNSphere(radius: 0.03959), diffuse: #imageLiteral(resourceName: "EarthDiffuse"), specular: #imageLiteral(resourceName: "EarthSpecular"), emission: #imageLiteral(resourceName: "EarthEmission"), normal: #imageLiteral(resourceName: "EarthNormal"), position: SCNVector3(1.2,0,0))
+        let venus = createPlanetaryBody(geometry: SCNSphere(radius: 0.03760), diffuse: #imageLiteral(resourceName: "VenusDiffuse"), specular: nil, emission: #imageLiteral(resourceName: "VenusSpecular"), normal: nil, position: SCNVector3(0.7,0,0))
         earthParent.addChildNode(earth)
         venusParent.addChildNode(venus)
         
@@ -46,12 +46,12 @@ class ViewController: UIViewController {
 //        self.sceneView.scene.rootNode.addChildNode(earthMoonParent)
 //        earthMoonParent.position = earth.position
         
-        let earthMoon = createPlanetaryBody(geometry: SCNSphere(radius: 0.03), diffuse: #imageLiteral(resourceName: "EarthMoonDiffuse"), specular: nil, emission: nil, normal: nil, position: SCNVector3(0.3,0,0))
-        earth.addChildNode(earthMoon)
-        
-        let earthMoonAction = SCNAction.rotateBy(x: 0, y: CGFloat(360.degreesToRadians), z: 0, duration: 2)
-        let foreverEarthMoon = SCNAction.repeatForever(earthMoonAction)
-        earth.runAction(foreverEarthMoon)
+//        let earthMoon = createPlanetaryBody(geometry: SCNSphere(radius: 0.03), diffuse: #imageLiteral(resourceName: "EarthMoonDiffuse"), specular: nil, emission: nil, normal: nil, position: SCNVector3(0.3,0,0))
+//        earth.addChildNode(earthMoon)
+//
+//        let earthMoonAction = SCNAction.rotateBy(x: 0, y: CGFloat(360.degreesToRadians), z: 0, duration: 2)
+//        let foreverEarthMoon = SCNAction.repeatForever(earthMoonAction)
+//        earth.runAction(foreverEarthMoon)
     }
     
     func createPlanetaryBody(geometry:SCNGeometry, diffuse:UIImage, specular:UIImage?, emission:UIImage?, normal:UIImage?, position:SCNVector3) -> SCNNode {

@@ -29,11 +29,13 @@ class ViewController: UIViewController {
         let venus = planetaryObject(name: "venus", geometry: SCNSphere(radius: 0.13760), diffuseImage: #imageLiteral(resourceName: "VenusDiffuse"), specularImage: nil, emissionImage: #imageLiteral(resourceName: "VenusSpecular"), normalImage: nil, position: SCNVector3(0.9,0,0), universeRotationSpeed: 5.0, rotationSpeed: 10.0)
         let earth = planetaryObject(name: "earth", geometry: SCNSphere(radius: 0.13959), diffuseImage: #imageLiteral(resourceName: "EarthDiffuse"), specularImage: #imageLiteral(resourceName: "EarthSpecular"), emissionImage: #imageLiteral(resourceName: "EarthEmission"), normalImage: #imageLiteral(resourceName: "EarthNormal"), position: SCNVector3(1.2,0,0), universeRotationSpeed: 8.0, rotationSpeed: 14.0)
         let mars = planetaryObject(name: "mars", geometry: SCNSphere(radius: 0.11959), diffuseImage: #imageLiteral(resourceName: "MarsDiffuse"), specularImage: nil, emissionImage: nil, normalImage: nil, position: SCNVector3(1.5,0,0), universeRotationSpeed: 9.0, rotationSpeed: 10.0)
+        let jupiter = planetaryObject(name: "jupiter", geometry: SCNSphere(radius: 0.2), diffuseImage: #imageLiteral(resourceName: "JupiterDiffuse"), specularImage: nil, emissionImage: nil, normalImage: nil, position: SCNVector3(2.0,0,0), universeRotationSpeed: 12.0, rotationSpeed: 10.0)
 
         self.planetObjects.append(mercury)
         self.planetObjects.append(venus)
         self.planetObjects.append(earth)
         self.planetObjects.append(mars)
+        self.planetObjects.append(jupiter)
 
         for body in self.planetObjects {
             let planet:SCNNode = createPlanetaryBody(geometry: body.geometry, diffuse: body.diffuseImage, specular: body.specularImage, emission: body.emissionImage, normal: body.normalImage, position: body.position)

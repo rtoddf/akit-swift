@@ -9,6 +9,17 @@ struct planetaryObject {
     var emissionImage:UIImage?
     var normalImage:UIImage?
     var position:SCNVector3
+    
+    func createPlanetaryBody(geometry:SCNGeometry, diffuse:UIImage, specular:UIImage?, emission:UIImage?, normal:UIImage?, position:SCNVector3) -> SCNNode {
+        let node = SCNNode()
+        node.geometry = geometry
+        node.geometry?.firstMaterial?.diffuse.contents = diffuse
+        node.geometry?.firstMaterial?.specular.contents = specular
+        node.geometry?.firstMaterial?.emission.contents = emission
+        node.geometry?.firstMaterial?.normal.contents = normal
+        node.position = position
+        return node
+    }
 }
 
 

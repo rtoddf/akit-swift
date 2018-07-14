@@ -12,6 +12,7 @@
 		001E1EBE20F7C0F80064DEE2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 001E1EBC20F7C0F80064DEE2 /* Main.storyboard */; };
 		001E1EC020F7C0F90064DEE2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 001E1EBF20F7C0F90064DEE2 /* Assets.xcassets */; };
 		001E1EC320F7C0F90064DEE2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 001E1EC120F7C0F90064DEE2 /* LaunchScreen.storyboard */; };
+		00867F2720F98CC30057302C /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00867F2620F98CC30057302C /* Extensions.swift */; };
 		7568022420F8F6B600800022 /* Objects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7568022320F8F6B600800022 /* Objects.swift */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +24,7 @@
 		001E1EBF20F7C0F90064DEE2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		001E1EC220F7C0F90064DEE2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		001E1EC420F7C0F90064DEE2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		00867F2620F98CC30057302C /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		7568022320F8F6B600800022 /* Objects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Objects.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -56,15 +58,40 @@
 		001E1EB720F7C0F80064DEE2 /* Planets01 */ = {
 			isa = PBXGroup;
 			children = (
-				7568022320F8F6B600800022 /* Objects.swift */,
+				00867F2820F98CE70057302C /* Controllers */,
+				00867F2520F98CB40057302C /* Helpers */,
+				00867F2420F98CA70057302C /* Models */,
 				001E1EB820F7C0F80064DEE2 /* AppDelegate.swift */,
-				001E1EBA20F7C0F80064DEE2 /* ViewController.swift */,
 				001E1EBC20F7C0F80064DEE2 /* Main.storyboard */,
 				001E1EBF20F7C0F90064DEE2 /* Assets.xcassets */,
 				001E1EC120F7C0F90064DEE2 /* LaunchScreen.storyboard */,
 				001E1EC420F7C0F90064DEE2 /* Info.plist */,
 			);
 			path = Planets01;
+			sourceTree = "<group>";
+		};
+		00867F2420F98CA70057302C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				7568022320F8F6B600800022 /* Objects.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		00867F2520F98CB40057302C /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				00867F2620F98CC30057302C /* Extensions.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		00867F2820F98CE70057302C /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				001E1EBA20F7C0F80064DEE2 /* ViewController.swift */,
+			);
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -141,6 +168,7 @@
 				001E1EBB20F7C0F80064DEE2 /* ViewController.swift in Sources */,
 				7568022420F8F6B600800022 /* Objects.swift in Sources */,
 				001E1EB920F7C0F80064DEE2 /* AppDelegate.swift in Sources */,
+				00867F2720F98CC30057302C /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

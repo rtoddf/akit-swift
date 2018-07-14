@@ -8,6 +8,8 @@ class ViewController: UIViewController {
     var planetObjects = [planetaryObject]()
     var planets = [SCNNode]()
     
+    let sunRadius:CGFloat = 0.432
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -16,20 +18,20 @@ class ViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-
-        let sun = planetaryObject(name: "sun", geometry: SCNSphere(radius: 0.432), diffuseImage: #imageLiteral(resourceName: "SunDiffuse"), specularImage: nil, emissionImage: nil, normalImage: nil, position: SCNVector3(0,0,-3.0), universeRotationSpeed: 0, rotationSpeed: 8.0)
+        let sun = planetaryObject(name: "sun", geometry: SCNSphere(radius: sunRadius), diffuseImage: #imageLiteral(resourceName: "SunDiffuse"), specularImage: nil, emissionImage: nil, normalImage: nil, position: SCNVector3(0, 0, -3.0), universeRotationSpeed: 0, rotationSpeed: 8.0)
         let sunNode = createPlanetaryBody(geometry: sun.geometry, diffuse: sun.diffuseImage, specular: sun.specularImage, emission: sun.emissionImage, normal: sun.normalImage, position: sun.position)
         self.sceneView.scene.rootNode.addChildNode(sunNode)
         
         let action = SCNAction.rotateBy(x: 0, y: CGFloat(360.degreesToRadians), z: 0, duration: sun.rotationSpeed)
         let forever = SCNAction.repeatForever(action)
         sunNode.runAction(forever)
-        
-        let mercury = planetaryObject(name: "mercury", geometry: SCNSphere(radius: 0.1), diffuseImage: #imageLiteral(resourceName: "MercuryDiffuse"), specularImage: nil, emissionImage: nil, normalImage: nil, position: SCNVector3(0.6,0,0), universeRotationSpeed: 3.0, rotationSpeed: 18.0)
-        let venus = planetaryObject(name: "venus", geometry: SCNSphere(radius: 0.13760), diffuseImage: #imageLiteral(resourceName: "VenusDiffuse"), specularImage: nil, emissionImage: #imageLiteral(resourceName: "VenusSpecular"), normalImage: nil, position: SCNVector3(0.9,0,0), universeRotationSpeed: 5.0, rotationSpeed: 10.0)
-        let earth = planetaryObject(name: "earth", geometry: SCNSphere(radius: 0.13959), diffuseImage: #imageLiteral(resourceName: "EarthDiffuse"), specularImage: #imageLiteral(resourceName: "EarthSpecular"), emissionImage: #imageLiteral(resourceName: "EarthEmission"), normalImage: #imageLiteral(resourceName: "EarthNormal"), position: SCNVector3(1.2,0,0), universeRotationSpeed: 8.0, rotationSpeed: 14.0)
-        let mars = planetaryObject(name: "mars", geometry: SCNSphere(radius: 0.11959), diffuseImage: #imageLiteral(resourceName: "MarsDiffuse"), specularImage: nil, emissionImage: nil, normalImage: nil, position: SCNVector3(1.5,0,0), universeRotationSpeed: 9.0, rotationSpeed: 10.0)
-        let jupiter = planetaryObject(name: "jupiter", geometry: SCNSphere(radius: 0.2), diffuseImage: #imageLiteral(resourceName: "JupiterDiffuse"), specularImage: nil, emissionImage: nil, normalImage: nil, position: SCNVector3(2.0,0,0), universeRotationSpeed: 12.0, rotationSpeed: 10.0)
+
+        let mercury = planetaryObject(name: "mercury", geometry: SCNSphere(radius: CGFloat(1516.getPlanetRadius)), diffuseImage: #imageLiteral(resourceName: "MercuryDiffuse"), specularImage: nil, emissionImage: nil, normalImage: nil, position: SCNVector3(CGFloat(35.distanceToSun), 0, 0), universeRotationSpeed: 88.rotationAroundTheSun, rotationSpeed: 18.0)
+        let venus = planetaryObject(name: "venus", geometry: SCNSphere(radius:CGFloat(3760.getPlanetRadius)), diffuseImage: #imageLiteral(resourceName: "VenusDiffuse"), specularImage: nil, emissionImage: #imageLiteral(resourceName: "VenusSpecular"), normalImage: nil, position: SCNVector3(CGFloat(67.distanceToSun), 0, 0), universeRotationSpeed: 225.rotationAroundTheSun, rotationSpeed: 10.0)
+        let earth = planetaryObject(name: "earth", geometry: SCNSphere(radius: CGFloat(3959.getPlanetRadius)), diffuseImage: #imageLiteral(resourceName: "EarthDiffuse"), specularImage: #imageLiteral(resourceName: "EarthSpecular"), emissionImage: #imageLiteral(resourceName: "EarthEmission"), normalImage: #imageLiteral(resourceName: "EarthNormal"), position: SCNVector3(CGFloat(92.distanceToSun), 0, 0), universeRotationSpeed: 365.rotationAroundTheSun, rotationSpeed: 14.0)
+        let mars = planetaryObject(name: "mars", geometry: SCNSphere(radius: CGFloat(2106.getPlanetRadius)), diffuseImage: #imageLiteral(resourceName: "MarsDiffuse"), specularImage: nil, emissionImage: nil, normalImage: nil, position: SCNVector3(CGFloat(141.distanceToSun), 0, 0), universeRotationSpeed: 687.rotationAroundTheSun, rotationSpeed: 10.0)
+        // still need to double the radius
+        let jupiter = planetaryObject(name: "jupiter", geometry: SCNSphere(radius: CGFloat(43441.getPlanetRadius)), diffuseImage: #imageLiteral(resourceName: "JupiterDiffuse"), specularImage: nil, emissionImage: nil, normalImage: nil, position: SCNVector3(CGFloat(483.distanceToSun), 0, 0), universeRotationSpeed: 4380.rotationAroundTheSun, rotationSpeed: 10.0)
 
         self.planetObjects.append(mercury)
         self.planetObjects.append(venus)
@@ -81,9 +83,24 @@ class ViewController: UIViewController {
         node.position = position
         return node
     }
+    
+    func calculatePlantDistance(originalDistance:CGFloat) -> CGFloat {
+        return sunRadius + (originalDistance * 0.01)
+    }
 
 }
 
 extension Int {
-    var degreesToRadians: Double { return Double(self) * .pi/180}
+    var degreesToRadians:Double { return Double(self) * .pi/180}
+    
+    // radius is radius in (miles * 0.00001) * 2
+    var getPlanetRadius:Double { return (Double(self) * 0.00001) * 2}
+    // distanceToSun is the million mile * 0.01
+    var distanceToSun:Double { return 0.432 + (Double(self) * 0.01) }
+    // rotation round the sun is the earth days / 36.5 (365 earth days in a year divided by a 10 second rotation for the earth)
+    var rotationAroundTheSun:Double { return Double(self) / (365 / 10) }
 }
+
+
+
+

@@ -20,16 +20,8 @@ class ViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         print("sun radius: \(sunRadius)")
         
-        // right now, the sun and jupiter are the same size
-        let sun = planetaryObject(name: "sun", geometry: SCNSphere(radius: sunRadius), diffuseImage: #imageLiteral(resourceName: "Sundiffuse"), specularImage: nil, emissionImage: nil, normalImage: nil, position: SCNVector3(CGFloat(0.distanceToSun), 0, -3.0), universeRotationSpeed: 0.rotationAroundTheSun, rotationSpeed: 648.rotationOnAxis, axisTilt: 7.5)
-        let sunNode = createPlanetaryBody(geometry: sun.geometry, diffuse: sun.diffuseImage, specular: sun.specularImage, emission: sun.emissionImage, normal: sun.normalImage, position: sun.position)
-        self.sceneView.scene.rootNode.addChildNode(sunNode)
-
-        // can you axis tilt the sun without screwing things up?
-        
-        let action = SCNAction.rotateBy(x: 0, y: CGFloat(360.degreesToRadians), z: 0, duration: sun.rotationSpeed)
-        let forever = SCNAction.repeatForever(action)
-        sunNode.runAction(forever)
+        let sunPosition = SCNVector3(CGFloat(0.distanceToSun), 0, -3.0)
+        setSunNode(position: sunPosition)
 
         let mercury = planetaryObject(name: "mercury", geometry: SCNSphere(radius: CGFloat(1516.getPlanetRadius)), diffuseImage: #imageLiteral(resourceName: "MercuryDiffuse"), specularImage: nil, emissionImage: nil, normalImage: nil, position: SCNVector3(CGFloat(35.distanceToSun), 0, 0), universeRotationSpeed: 88.rotationAroundTheSun, rotationSpeed: 2112.rotationOnAxis, axisTilt: 2.11)
         let venus = planetaryObject(name: "venus", geometry: SCNSphere(radius:CGFloat(3760.getPlanetRadius)), diffuseImage: #imageLiteral(resourceName: "VenusDiffuse"), specularImage: nil, emissionImage: #imageLiteral(resourceName: "VenusSpecular"), normalImage: nil, position: SCNVector3(CGFloat(67.distanceToSun), 0, 0), universeRotationSpeed: 225.rotationAroundTheSun, rotationSpeed: 5832.rotationOnAxis, axisTilt: 177.3)
@@ -63,7 +55,7 @@ class ViewController: UIViewController {
 
             let universeCenterNode = SCNNode()
             self.sceneView.scene.rootNode.addChildNode(universeCenterNode)
-            universeCenterNode.position = sunNode.position
+            universeCenterNode.position = sunPosition
             
             universeCenterNode.addChildNode(planet)
             
@@ -79,17 +71,20 @@ class ViewController: UIViewController {
             let planetForever = SCNAction.repeatForever(planetAction)
             planet.runAction(planetForever)
         }
+    }
+    
+    func setSunNode(position:SCNVector3){
+        // right now, the sun and jupiter are the same size
+        let sun = planetaryObject(name: "sun", geometry: SCNSphere(radius: sunRadius), diffuseImage: #imageLiteral(resourceName: "Sundiffuse"), specularImage: nil, emissionImage: nil, normalImage: nil, position: position, universeRotationSpeed: 0.rotationAroundTheSun, rotationSpeed: 648.rotationOnAxis, axisTilt: 7.5)
+        let sunNode = createPlanetaryBody(geometry: sun.geometry, diffuse: sun.diffuseImage, specular: sun.specularImage, emission: sun.emissionImage, normal: sun.normalImage, position: sun.position)
+        self.sceneView.scene.rootNode.addChildNode(sunNode)
 
-//        let earthMoonParent = SCNNode()
-//        self.sceneView.scene.rootNode.addChildNode(earthMoonParent)
-//        earthMoonParent.position = earth.position
+        let sunTilt = sun.axisTilt * .pi/180
+        sunNode.eulerAngles = SCNVector3(0, 0, sunTilt)
         
-//        let earthMoon = createPlanetaryBody(geometry: SCNSphere(radius: 0.03), diffuse: #imageLiteral(resourceName: "EarthMoonDiffuse"), specular: nil, emission: nil, normal: nil, position: SCNVector3(0.3,0,0))
-//        earth.addChildNode(earthMoon)
-//
-//        let earthMoonAction = SCNAction.rotateBy(x: 0, y: CGFloat(360.degreesToRadians), z: 0, duration: 2)
-//        let foreverEarthMoon = SCNAction.repeatForever(earthMoonAction)
-//        earth.runAction(foreverEarthMoon)
+        let action = SCNAction.rotateBy(x: 0, y: CGFloat(360.degreesToRadians), z: 0, duration: sun.rotationSpeed)
+        let forever = SCNAction.repeatForever(action)
+        sunNode.runAction(forever)
     }
     
     func createPlanetaryBody(geometry:SCNGeometry, diffuse:UIImage, specular:UIImage?, emission:UIImage?, normal:UIImage?, position:SCNVector3) -> SCNNode {
@@ -102,9 +97,4 @@ class ViewController: UIViewController {
         node.position = position
         return node
     }
-    
-    func calculatePlantDistance(originalDistance:CGFloat) -> CGFloat {
-        return sunRadius + (originalDistance * 0.01)
-    }
-
 }

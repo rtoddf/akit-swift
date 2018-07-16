@@ -7,12 +7,23 @@ class ViewController: UIViewController {
     @IBAction func pause(_ sender: Any) {
         if !paused {
             self.sceneView.scene.rootNode.enumerateChildNodes { (node, _) in
+//                print("we stop the animationL: ", node)
                 node.removeAllActions()
             }
             self.paused = true
         } else {
             self.sceneView.scene.rootNode.enumerateChildNodes { (node, _) in
-                print("we need to restart; ", node)
+
+                if node.name != nil {
+                    guard let nodeName = node.name else { return }
+                    if nodeName == "earth" {
+                        print("we need to restart: \(nodeName)")
+                        let planetAction = SCNAction.rotateBy(x: 0, y: CGFloat(360.degreesToRadians), z: 0, duration: 24.rotationOnAxis)
+                        let planetForever = SCNAction.repeatForever(planetAction)
+                        node.runAction(planetForever)
+                    }
+                    
+                }
             }
             
             self.sunNode.runAction(self.sunForever, forKey: "sunAction")
@@ -47,7 +58,7 @@ class ViewController: UIViewController {
         self.planetObjects = setPlanetaryObject()
 
         for body in self.planetObjects {
-            let planet:SCNNode = createPlanetaryBody(geometry: body.geometry, diffuse: body.diffuseImage, specular: body.specularImage, emission: body.emissionImage, normal: body.normalImage, position: body.position)
+            let planet:SCNNode = createPlanetaryBody(name:body.name, geometry: body.geometry, diffuse: body.diffuseImage, specular: body.specularImage, emission: body.emissionImage, normal: body.normalImage, position: body.position)
             
             // why do you need this?
             let tilt = body.axisTilt * .pi/180
@@ -77,7 +88,7 @@ class ViewController: UIViewController {
     func setSunNode(position:SCNVector3){
         // right now, the sun and jupiter are the same size
         let sun = planetaryObject(name: "sun", geometry: SCNSphere(radius: sunRadius), diffuseImage: #imageLiteral(resourceName: "Sundiffuse"), specularImage: nil, emissionImage: nil, normalImage: nil, position: position, universeRotationSpeed: 0.rotationAroundTheSun, rotationSpeed: 648.rotationOnAxis, axisTilt: 7.5)
-        self.sunNode = createPlanetaryBody(geometry: sun.geometry, diffuse: sun.diffuseImage, specular: sun.specularImage, emission: sun.emissionImage, normal: sun.normalImage, position: sun.position)
+        self.sunNode = createPlanetaryBody(name: sun.name, geometry: sun.geometry, diffuse: sun.diffuseImage, specular: sun.specularImage, emission: sun.emissionImage, normal: sun.normalImage, position: sun.position)
         self.sceneView.scene.rootNode.addChildNode(self.sunNode)
 
         let sunTilt = sun.axisTilt * .pi/180
@@ -114,8 +125,9 @@ class ViewController: UIViewController {
         return planetObjects
     }
     
-    func createPlanetaryBody(geometry:SCNGeometry, diffuse:UIImage, specular:UIImage?, emission:UIImage?, normal:UIImage?, position:SCNVector3) -> SCNNode {
+    func createPlanetaryBody(name:String, geometry:SCNGeometry, diffuse:UIImage, specular:UIImage?, emission:UIImage?, normal:UIImage?, position:SCNVector3) -> SCNNode {
         let node = SCNNode()
+        node.name = name
         node.geometry = geometry
         node.geometry?.firstMaterial?.diffuse.contents = diffuse
         node.geometry?.firstMaterial?.specular.contents = specular

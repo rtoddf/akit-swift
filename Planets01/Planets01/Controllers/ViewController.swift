@@ -3,12 +3,35 @@ import ARKit
 
 class ViewController: UIViewController {
     @IBOutlet weak var sceneView: ARSCNView!
+    
+    @IBAction func pause(_ sender: Any) {
+        if !paused {
+            self.sceneView.scene.rootNode.enumerateChildNodes { (node, _) in
+                node.removeAllActions()
+            }
+            self.paused = true
+        } else {
+            self.sceneView.scene.rootNode.enumerateChildNodes { (node, _) in
+                print("we need to restart; ", node)
+            }
+            
+            self.sunNode.runAction(self.sunForever, forKey: "sunAction")
+            self.paused = false
+        }
+        
+    }
+
     let configuration = ARWorldTrackingConfiguration()
     
     var planetObjects = [planetaryObject]()
     var planets = [SCNNode]()
     
+    var sunNode = SCNNode()
+    var sunAction = SCNAction()
+    var sunForever = SCNAction()
     let sunRadius:CGFloat = CGFloat(43441.getPlanetRadius)
+    
+    var paused:Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,16 +76,16 @@ class ViewController: UIViewController {
     
     func setSunNode(position:SCNVector3){
         // right now, the sun and jupiter are the same size
-        let sun = planetaryObject(name: "sun", geometry: SCNSphere(radius: sunRadius), diffuseImage: #imageLiteral(resourceName: "SunDiffuse"), specularImage: nil, emissionImage: nil, normalImage: nil, position: position, universeRotationSpeed: 0.rotationAroundTheSun, rotationSpeed: 648.rotationOnAxis, axisTilt: 7.5)
-        let sunNode = createPlanetaryBody(geometry: sun.geometry, diffuse: sun.diffuseImage, specular: sun.specularImage, emission: sun.emissionImage, normal: sun.normalImage, position: sun.position)
-        self.sceneView.scene.rootNode.addChildNode(sunNode)
+        let sun = planetaryObject(name: "sun", geometry: SCNSphere(radius: sunRadius), diffuseImage: #imageLiteral(resourceName: "Sundiffuse"), specularImage: nil, emissionImage: nil, normalImage: nil, position: position, universeRotationSpeed: 0.rotationAroundTheSun, rotationSpeed: 648.rotationOnAxis, axisTilt: 7.5)
+        self.sunNode = createPlanetaryBody(geometry: sun.geometry, diffuse: sun.diffuseImage, specular: sun.specularImage, emission: sun.emissionImage, normal: sun.normalImage, position: sun.position)
+        self.sceneView.scene.rootNode.addChildNode(self.sunNode)
 
         let sunTilt = sun.axisTilt * .pi/180
         sunNode.eulerAngles = SCNVector3(0, 0, sunTilt)
         
-        let action = SCNAction.rotateBy(x: 0, y: CGFloat(360.degreesToRadians), z: 0, duration: sun.rotationSpeed)
-        let forever = SCNAction.repeatForever(action)
-        sunNode.runAction(forever)
+        self.sunAction = SCNAction.rotateBy(x: 0, y: CGFloat(360.degreesToRadians), z: 0, duration: sun.rotationSpeed)
+        self.sunForever = SCNAction.repeatForever(self.sunAction)
+        sunNode.runAction(self.sunForever, forKey: "sunAction")
     }
     
     func setPlanetaryObject() -> [planetaryObject] {

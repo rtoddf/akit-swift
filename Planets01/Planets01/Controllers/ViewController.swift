@@ -23,8 +23,6 @@ class ViewController: UIViewController {
                         let planetAction = SCNAction.rotateBy(x: 0, y: CGFloat(360.degreesToRadians), z: 0, duration: body.rotationSpeed)
                         let planetForever = SCNAction.repeatForever(planetAction)
                         node.runAction(planetForever)
-                    } else {
-//                        print("not found")
                     }
                 }
             }
@@ -34,7 +32,9 @@ class ViewController: UIViewController {
             if ((planetInfoView.superview) != nil) {
                 planetInfoView.removeFromSuperview()
                 nameLabel.removeFromSuperview()
-                distanceFromTheSunLabel.removeFromSuperview()
+                radiusLabel.removeFromSuperview()
+                distanceLabel.removeFromSuperview()
+                funFactLabel.removeFromSuperview()
             }
 
             self.paused = false
@@ -56,18 +56,34 @@ class ViewController: UIViewController {
     
     let planetInfoView:UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.orange.withAlphaComponent(0.75)
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.75)
         return view
-    }()
-    let distanceFromTheSunLabel:UILabel = {
-        let label = UILabel()
-        label.textColor = .white
-        return label
     }()
     
     let nameLabel:UILabel = {
         let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 22)
         label.textColor = .white
+        return label
+    }()
+    
+    let radiusLabel:UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 15)
+        label.textColor = .white
+        return label
+    }()
+    
+    let distanceLabel:UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = .white
+        return label
+    }()
+    
+    let funFactLabel:UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 5
         return label
     }()
 
@@ -116,7 +132,7 @@ class ViewController: UIViewController {
     
     func setSunNode(position:SCNVector3){
         // right now, the sun and jupiter are the same size
-        let sun = planetaryObject(name: "Sun", geometry: SCNSphere(radius: sunRadius), diffuseImage: #imageLiteral(resourceName: "Sundiffuse"), specularImage: nil, emissionImage: nil, normalImage: nil, position: position, universeRotationSpeed: 0.rotationAroundTheSun, rotationSpeed: 648.rotationOnAxis, axisTilt: 7.5)
+        let sun = planetaryObject(name: "Sun", geometry: SCNSphere(radius: sunRadius), diffuseImage: #imageLiteral(resourceName: "Sundiffuse"), specularImage: nil, emissionImage: nil, normalImage: nil, position: position, universeRotationSpeed: 0.rotationAroundTheSun, rotationSpeed: 648.rotationOnAxis, axisTilt: 7.5, radius: "432169 mi", distance: "0 mi")
         self.sunNode = createPlanetaryBody(name: sun.name, geometry: sun.geometry, diffuse: sun.diffuseImage, specular: sun.specularImage, emission: sun.emissionImage, normal: sun.normalImage, position: sun.position)
         self.sceneView.scene.rootNode.addChildNode(self.sunNode)
 
@@ -129,18 +145,18 @@ class ViewController: UIViewController {
     }
     
     func setPlanetaryObject() -> [planetaryObject] {
-        let mercury = planetaryObject(name: "Mercury", geometry: SCNSphere(radius: CGFloat(1516.getPlanetRadius)), diffuseImage: #imageLiteral(resourceName: "MercuryDiffuse"), specularImage: nil, emissionImage: nil, normalImage: nil, position: SCNVector3(CGFloat(35.distanceToSun), 0, 0), universeRotationSpeed: 88.rotationAroundTheSun, rotationSpeed: 2112.rotationOnAxis, axisTilt: 2.11)
-        let venus = planetaryObject(name: "Venus", geometry: SCNSphere(radius:CGFloat(3760.getPlanetRadius)), diffuseImage: #imageLiteral(resourceName: "VenusDiffuse"), specularImage: nil, emissionImage: #imageLiteral(resourceName: "VenusSpecular"), normalImage: nil, position: SCNVector3(CGFloat(67.distanceToSun), 0, 0), universeRotationSpeed: 225.rotationAroundTheSun, rotationSpeed: 5832.rotationOnAxis, axisTilt: 177.3)
-        let earth = planetaryObject(name: "Earth", geometry: SCNSphere(radius: CGFloat(3959.getPlanetRadius)), diffuseImage: #imageLiteral(resourceName: "EarthDiffuse"), specularImage: #imageLiteral(resourceName: "EarthSpecular"), emissionImage: #imageLiteral(resourceName: "EarthEmission"), normalImage: #imageLiteral(resourceName: "EarthNormal"), position: SCNVector3(CGFloat(92.distanceToSun), 0, 0), universeRotationSpeed: 365.rotationAroundTheSun, rotationSpeed: 24.rotationOnAxis, axisTilt: 23.5)
+        let mercury = planetaryObject(name: "Mercury", geometry: SCNSphere(radius: CGFloat(1516.getPlanetRadius)), diffuseImage: #imageLiteral(resourceName: "MercuryDiffuse"), specularImage: nil, emissionImage: nil, normalImage: nil, position: SCNVector3(CGFloat(35.distanceToSun), 0, 0), universeRotationSpeed: 88.rotationAroundTheSun, rotationSpeed: 2112.rotationOnAxis, axisTilt: 2.11, radius: "1516 mi", distance: "35.98 million mi")
+        let venus = planetaryObject(name: "Venus", geometry: SCNSphere(radius:CGFloat(3760.getPlanetRadius)), diffuseImage: #imageLiteral(resourceName: "VenusDiffuse"), specularImage: nil, emissionImage: #imageLiteral(resourceName: "VenusSpecular"), normalImage: nil, position: SCNVector3(CGFloat(67.distanceToSun), 0, 0), universeRotationSpeed: 225.rotationAroundTheSun, rotationSpeed: 5832.rotationOnAxis, axisTilt: 177.3, radius: "3760 mi", distance: "67.24 million mi")
+        let earth = planetaryObject(name: "Earth", geometry: SCNSphere(radius: CGFloat(3959.getPlanetRadius)), diffuseImage: #imageLiteral(resourceName: "EarthDiffuse"), specularImage: #imageLiteral(resourceName: "EarthSpecular"), emissionImage: #imageLiteral(resourceName: "EarthEmission"), normalImage: #imageLiteral(resourceName: "EarthNormal"), position: SCNVector3(CGFloat(92.distanceToSun), 0, 0), universeRotationSpeed: 365.rotationAroundTheSun, rotationSpeed: 24.rotationOnAxis, axisTilt: 23.5, radius: "3959 mi", distance: "92.96 million mi")
         
-        let mars = planetaryObject(name: "Mars", geometry: SCNSphere(radius: CGFloat(2106.getPlanetRadius)), diffuseImage: #imageLiteral(resourceName: "MarsDiffuse"), specularImage: nil, emissionImage: nil, normalImage: nil, position: SCNVector3(CGFloat(141.distanceToSun), 0, 0), universeRotationSpeed: 687.rotationAroundTheSun, rotationSpeed: 25.rotationOnAxis, axisTilt: 25)
-        let jupiter = planetaryObject(name: "Jupiter", geometry: SCNSphere(radius: CGFloat(43441.getPlanetRadius)), diffuseImage: #imageLiteral(resourceName: "JupiterDiffuse"), specularImage: nil, emissionImage: nil, normalImage: nil, position: SCNVector3(CGFloat(483.distanceToSun), 0, 0), universeRotationSpeed: 4380.rotationAroundTheSun, rotationSpeed: 10.rotationOnAxis, axisTilt: 3)
+        let mars = planetaryObject(name: "Mars", geometry: SCNSphere(radius: CGFloat(2106.getPlanetRadius)), diffuseImage: #imageLiteral(resourceName: "MarsDiffuse"), specularImage: nil, emissionImage: nil, normalImage: nil, position: SCNVector3(CGFloat(141.distanceToSun), 0, 0), universeRotationSpeed: 687.rotationAroundTheSun, rotationSpeed: 25.rotationOnAxis, axisTilt: 25, radius: "2106 mi", distance: "141.6 million mi")
+        let jupiter = planetaryObject(name: "Jupiter", geometry: SCNSphere(radius: CGFloat(43441.getPlanetRadius)), diffuseImage: #imageLiteral(resourceName: "JupiterDiffuse"), specularImage: nil, emissionImage: nil, normalImage: nil, position: SCNVector3(CGFloat(483.distanceToSun), 0, 0), universeRotationSpeed: 4380.rotationAroundTheSun, rotationSpeed: 10.rotationOnAxis, axisTilt: 3, radius: "43441 mi", distance: "483.8 million mi")
         
         // don't forget the rings
-        let saturn = planetaryObject(name: "Saturn", geometry: SCNSphere(radius: CGFloat(36184.getPlanetRadius)), diffuseImage: #imageLiteral(resourceName: "SaturnDiffuse"), specularImage: nil, emissionImage: nil, normalImage: nil, position: SCNVector3(CGFloat(890.distanceToSun), 0, 0), universeRotationSpeed: 11000.rotationAroundTheSun, rotationSpeed: 24.rotationOnAxis, axisTilt: 26.7)
+        let saturn = planetaryObject(name: "Saturn", geometry: SCNSphere(radius: CGFloat(36184.getPlanetRadius)), diffuseImage: #imageLiteral(resourceName: "SaturnDiffuse"), specularImage: nil, emissionImage: nil, normalImage: nil, position: SCNVector3(CGFloat(890.distanceToSun), 0, 0), universeRotationSpeed: 11000.rotationAroundTheSun, rotationSpeed: 24.rotationOnAxis, axisTilt: 26.7, radius: "36184 mi", distance: "890.7 million miles")
         
-        let uranus = planetaryObject(name: "Uranus", geometry: SCNSphere(radius: CGFloat(15759.getPlanetRadius)), diffuseImage: #imageLiteral(resourceName: "UranusDiffuse"), specularImage: nil, emissionImage: nil, normalImage: nil, position: SCNVector3(CGFloat(1784.distanceToSun), 0, 0), universeRotationSpeed: 31000.rotationAroundTheSun, rotationSpeed: 17.rotationOnAxis, axisTilt: 23.5)
-        let neptune = planetaryObject(name: "Neptune", geometry: SCNSphere(radius: CGFloat(15299.getPlanetRadius)), diffuseImage: #imageLiteral(resourceName: "NeptuneDiffuse"), specularImage: nil, emissionImage: nil, normalImage: nil, position: SCNVector3(CGFloat(2800.distanceToSun), 0, 0), universeRotationSpeed: 60225.rotationAroundTheSun, rotationSpeed: 16.rotationOnAxis, axisTilt: 28.32)
+        let uranus = planetaryObject(name: "Uranus", geometry: SCNSphere(radius: CGFloat(15759.getPlanetRadius)), diffuseImage: #imageLiteral(resourceName: "UranusDiffuse"), specularImage: nil, emissionImage: nil, normalImage: nil, position: SCNVector3(CGFloat(1784.distanceToSun), 0, 0), universeRotationSpeed: 31000.rotationAroundTheSun, rotationSpeed: 17.rotationOnAxis, axisTilt: 23.5, radius: "15759 mi", distance: "1784 million miles")
+        let neptune = planetaryObject(name: "Neptune", geometry: SCNSphere(radius: CGFloat(15299.getPlanetRadius)), diffuseImage: #imageLiteral(resourceName: "NeptuneDiffuse"), specularImage: nil, emissionImage: nil, normalImage: nil, position: SCNVector3(CGFloat(2800.distanceToSun), 0, 0), universeRotationSpeed: 60225.rotationAroundTheSun, rotationSpeed: 16.rotationOnAxis, axisTilt: 28.32, radius: "15299 mi", distance: "2.8 billion miles")
         
         self.planetObjects.append(mercury)
         self.planetObjects.append(venus)
@@ -174,26 +190,34 @@ class ViewController: UIViewController {
             if let tappednode = hits.first?.node {
                 //do something with tapped object
                 let foundItem = planetObjects.filter { $0.name == (tappednode.name)?.replacingOccurrences(of: "Object", with: "") }
-                
-//                print("foundItem: \(foundItem)")
-                
-                if let rotationSpeedAroundTheSun = foundItem.first?.universeRotationSpeed {
-                    self.distanceFromTheSunLabel.text = "Rotation: \(rotationSpeedAroundTheSun)"
-                }
-                
                 self.nameLabel.text = foundItem.first?.name
+                
+                let funFactString = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In consequat felis quis libero interdum, a vulputate erat ornare. Cras convallis gravida nibh, quis feugiat eros pellentesque eget."
+                let attributedText = NSMutableAttributedString(string: funFactString, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 15), NSAttributedStringKey.foregroundColor: UIColor(hexString: "#fff") as Any])
+                self.funFactLabel.attributedText = attributedText
+                
+                if let radius = foundItem.first?.radius,
+                    let distance = foundItem.first?.distance {
+                    self.radiusLabel.text = "Radius: \(radius)"
+                    self.distanceLabel.text = "Distance from the sun: \(distance)"
+                }
 
                 //add it to parents subview
                 self.view.addSubview(planetInfoView)
                 self.view.addConstraintsWithFormat(format: "H:|-20-[v0]-20-|", views: planetInfoView)
-                self.view.addConstraintsWithFormat(format: "V:|-80-[v0(150)]", views: planetInfoView)
+                self.view.addConstraintsWithFormat(format: "V:|-50-[v0(200)]", views: planetInfoView)
                 
                 planetInfoView.addSubview(nameLabel)
-                planetInfoView.addSubview(distanceFromTheSunLabel)
+                planetInfoView.addSubview(radiusLabel)
+                planetInfoView.addSubview(distanceLabel)
+                planetInfoView.addSubview(funFactLabel)
                 
-                planetInfoView.addConstraintsWithFormat(format: "H:|-6-[v0]-6-|", views: nameLabel)
-                planetInfoView.addConstraintsWithFormat(format: "H:|-6-[v0]-6-|", views: distanceFromTheSunLabel)
-                planetInfoView.addConstraintsWithFormat(format: "V:|-6-[v0]-2-[v1]", views: nameLabel, distanceFromTheSunLabel)
+                planetInfoView.addConstraintsWithFormat(format: "H:|-12-[v0]-12-|", views: nameLabel)
+                planetInfoView.addConstraintsWithFormat(format: "H:|-12-[v0]-12-|", views: radiusLabel)
+                planetInfoView.addConstraintsWithFormat(format: "H:|-12-[v0]-12-|", views: distanceLabel)
+                planetInfoView.addConstraintsWithFormat(format: "H:|-12-[v0]-12-|", views: funFactLabel)
+                
+                planetInfoView.addConstraintsWithFormat(format: "V:|-12-[v0]-4-[v1]-4-[v2]-4-[v3]", views: nameLabel, radiusLabel, distanceLabel, funFactLabel)
             }
         }
     }

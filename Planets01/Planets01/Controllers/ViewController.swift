@@ -1,5 +1,6 @@
 import UIKit
 import ARKit
+import SpriteKit
 
 class ViewController: UIViewController {
     @IBOutlet weak var sceneView: ARSCNView!
@@ -95,6 +96,8 @@ class ViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+//        printFonts()
+        
         let sunPosition = SCNVector3(CGFloat(0.distanceToSun), 0, -3.0)
         setSunNode(position: sunPosition)
 
@@ -189,13 +192,51 @@ class ViewController: UIViewController {
         
             if let tappednode = hits.first?.node {
                 //do something with tapped object
+                
+//                let skScene = SKScene(size: CGSize(width: 2, height: 2))
+//                skScene.backgroundColor = UIColor.black.withAlphaComponent(0.75)
+//
+//                let labelNode = SKLabelNode(text: "Hello World")
+//                labelNode.fontSize = 300
+//                labelNode.fontName = "GillSans-Bold"
+//                labelNode.color = UIColor.red
+//                labelNode.position = CGPoint(x:0, y:0)
+//
+//                skScene.addChild(labelNode)
+//
+//                let rectangle = SKShapeNode(rect: CGRect(x: 0, y: 0, width: 200, height: 200), cornerRadius: 10)
+//                rectangle.fillColor = #colorLiteral(red: 0.807843148708344, green: 0.0274509806185961, blue: 0.333333343267441, alpha: 1.0)
+//                rectangle.strokeColor = #colorLiteral(red: 0.439215689897537, green: 0.0117647061124444, blue: 0.192156866192818, alpha: 1.0)
+//                rectangle.lineWidth = 5
+//                rectangle.alpha = 0.4
+//
+//                skScene.addChild(rectangle)
+//
+//
+//
+//                let plane = SCNPlane(width: 2, height: 2)
+//
+//                let material = SCNMaterial()
+//                material.isDoubleSided = true
+//                material.diffuse.contents = skScene
+//
+//                plane.materials = [material]
+//
+//                let node = SCNNode(geometry: plane)
+//
+//
+//                node.position = SCNVector3(0,0,-2)
+//
+//
+//                self.sceneView.scene.rootNode.addChildNode(node)
+                
                 let foundItem = planetObjects.filter { $0.name == (tappednode.name)?.replacingOccurrences(of: "Object", with: "") }
                 self.nameLabel.text = foundItem.first?.name
-                
+
                 let funFactString = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In consequat felis quis libero interdum, a vulputate erat ornare. Cras convallis gravida nibh, quis feugiat eros pellentesque eget."
                 let attributedText = NSMutableAttributedString(string: funFactString, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 15), NSAttributedStringKey.foregroundColor: UIColor(hexString: "#fff") as Any])
                 self.funFactLabel.attributedText = attributedText
-                
+
                 if let radius = foundItem.first?.radius,
                     let distance = foundItem.first?.distance {
                     self.radiusLabel.text = "Radius: \(radius)"
@@ -206,17 +247,17 @@ class ViewController: UIViewController {
                 self.view.addSubview(planetInfoView)
                 self.view.addConstraintsWithFormat(format: "H:|-20-[v0]-20-|", views: planetInfoView)
                 self.view.addConstraintsWithFormat(format: "V:|-50-[v0(200)]", views: planetInfoView)
-                
+
                 planetInfoView.addSubview(nameLabel)
                 planetInfoView.addSubview(radiusLabel)
                 planetInfoView.addSubview(distanceLabel)
                 planetInfoView.addSubview(funFactLabel)
-                
+
                 planetInfoView.addConstraintsWithFormat(format: "H:|-12-[v0]-12-|", views: nameLabel)
                 planetInfoView.addConstraintsWithFormat(format: "H:|-12-[v0]-12-|", views: radiusLabel)
                 planetInfoView.addConstraintsWithFormat(format: "H:|-12-[v0]-12-|", views: distanceLabel)
                 planetInfoView.addConstraintsWithFormat(format: "H:|-12-[v0]-12-|", views: funFactLabel)
-                
+
                 planetInfoView.addConstraintsWithFormat(format: "V:|-12-[v0]-4-[v1]-4-[v2]-4-[v3]", views: nameLabel, radiusLabel, distanceLabel, funFactLabel)
             }
         }

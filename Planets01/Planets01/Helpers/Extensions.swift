@@ -74,3 +74,13 @@ extension UIColor {
         self.init(red: CGFloat(r!) / 255, green: CGFloat(g!) / 255, blue: CGFloat(b!) / 255, alpha: alpha)
     }
 }
+
+func printFonts() {
+    let fontFamilyNames = UIFont.familyNames
+    for familyName in fontFamilyNames {
+        print("------------------------------")
+        print("Font Family Name = [\(familyName)]")
+        let names = UIFont.fontNames(forFamilyName: familyName)
+        print("Font Names = [\(names)]")
+    }
+}

@@ -7,23 +7,40 @@ class ViewController: UIViewController {
     @IBAction func pause(_ sender: Any) {
         if !paused {
             self.sceneView.scene.rootNode.enumerateChildNodes { (node, _) in
-//                print("we stop the animationL: ", node)
                 node.removeAllActions()
             }
             self.paused = true
         } else {
+            
             self.sceneView.scene.rootNode.enumerateChildNodes { (node, _) in
-
-                if node.name != nil {
-                    guard let nodeName = node.name else { return }
-                    if nodeName == "earth" {
-                        print("we need to restart: \(nodeName)")
-                        let planetAction = SCNAction.rotateBy(x: 0, y: CGFloat(360.degreesToRadians), z: 0, duration: 24.rotationOnAxis)
-                        let planetForever = SCNAction.repeatForever(planetAction)
-                        node.runAction(planetForever)
+                
+                for body in planetObjects {
+                    if node.name == "universeCenterNodeFor\(body.name)" {
+//                        print("planet name: \(body.name)")
+//                        print("node name: \(node.name)")
+                        
+                        let universePlanetRotation = SCNAction.rotateBy(x: 0, y: CGFloat(360.degreesToRadians), z: 0, duration: body.universeRotationSpeed)
+                        let universePlanetForeverAction = SCNAction.repeatForever(universePlanetRotation)
+                        node.runAction(universePlanetForeverAction)
                     }
-                    
                 }
+                
+//                if node.name == "universeCenterNodeForearth" {
+//                    print("we need to restart: \(node.name)")
+//                }
+                
+//                print("we need to restart: \(node.name)")
+
+//                if node.name != nil {
+//                    guard let nodeName = node.name else { return }
+//                    if nodeName == "earth" {
+//                        print("we need to restart: \(nodeName)")
+//                        let planetAction = SCNAction.rotateBy(x: 0, y: CGFloat(360.degreesToRadians), z: 0, duration: 24.rotationOnAxis)
+//                        let planetForever = SCNAction.repeatForever(planetAction)
+//                        node.runAction(planetForever)
+//                    }
+//
+//                }
             }
             
             self.sunNode.runAction(self.sunForever, forKey: "sunAction")
@@ -68,6 +85,7 @@ class ViewController: UIViewController {
             let universeCenterNode = SCNNode()
             self.sceneView.scene.rootNode.addChildNode(universeCenterNode)
             universeCenterNode.position = sunPosition
+            universeCenterNode.name = "universeCenterNodeFor\(body.name)"
             
             universeCenterNode.addChildNode(planet)
             

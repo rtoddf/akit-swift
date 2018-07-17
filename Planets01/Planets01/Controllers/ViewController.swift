@@ -141,4 +141,61 @@ class ViewController: UIViewController {
         node.position = position
         return node
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touchLocation = touches.first?.location(in: sceneView) else { return }
+        let hits = self.sceneView.hitTest(touchLocation, options: nil)
+        
+        if let tappednode = hits.first?.node {
+            //do something with tapped object
+            let foundItem = planetObjects.filter { $0.name == (tappednode.name)?.replacingOccurrences(of: "Object", with: "") }
+            
+            print("foundItem: \(foundItem)")
+            
+            //instantiate scene view in viewDidLoad
+            let planetInfoView:UIView = {
+                let view = UIView()
+                view.backgroundColor = UIColor.orange.withAlphaComponent(0.75)
+                return view
+            }()
+            
+            let distanceFromTheSunLabel:UILabel = {
+                let label = UILabel()
+                if let rotationSpeedAroundTheSun = foundItem.first?.universeRotationSpeed {
+                    label.text = "Rotation: \(rotationSpeedAroundTheSun)"
+                }
+                label.textColor = .white
+                return label
+            }()
+            
+            let nameLabel:UILabel = {
+                let label = UILabel()
+                label.text = foundItem.first?.name
+                label.textColor = .white
+                return label
+            }()
+
+            //add it to parents subview
+            self.view.addSubview(planetInfoView)
+            
+            
+            //add autolayout contstraints
+//            planetInfoView.translatesAutoresizingMaskIntoConstraints = false
+//
+//            planetInfoView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+//            planetInfoView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+//            planetInfoView.widthAnchor.constraint(equalToConstant: 150).isActive = true
+//            planetInfoView.heightAnchor.constraint(equalToConstant: 150).isActive = true
+            
+            self.view.addConstraintsWithFormat(format: "H:|-20-[v0]-20-|", views: planetInfoView)
+            self.view.addConstraintsWithFormat(format: "V:|-80-[v0(150)]", views: planetInfoView)
+            
+            planetInfoView.addSubview(nameLabel)
+            planetInfoView.addSubview(distanceFromTheSunLabel)
+            
+            planetInfoView.addConstraintsWithFormat(format: "H:|-6-[v0]-6-|", views: nameLabel)
+            planetInfoView.addConstraintsWithFormat(format: "H:|-6-[v0]-6-|", views: distanceFromTheSunLabel)
+            planetInfoView.addConstraintsWithFormat(format: "V:|-6-[v0]-2-[v1]", views: nameLabel, distanceFromTheSunLabel)
+        }
+    }
 }

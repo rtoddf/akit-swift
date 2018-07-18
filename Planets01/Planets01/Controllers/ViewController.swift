@@ -211,22 +211,22 @@ class ViewController: UIViewController {
             print("pointVector y: \(pointVector.y)")
             print("pointVector z: \(pointVector.z)")
             
-            let sk = SKScene(size: CGSize(width: 3000, height: 2000))
+            let sk = SKScene(size: CGSize(width: 500, height: 250))
             sk.backgroundColor = UIColor.clear
         
-            let rectangle = SKShapeNode(rect: CGRect(x: 0, y: 0, width: 3000, height: 2000), cornerRadius: 10)
+            let rectangle = SKShapeNode(rect: CGRect(x: 0, y: 0, width: 500, height: 250), cornerRadius: 0)
             rectangle.fillColor = UIColor.black
-            rectangle.strokeColor = UIColor.white
-            rectangle.lineWidth = 5
+//            rectangle.strokeColor = UIColor.white
+//            rectangle.lineWidth = 5
             rectangle.alpha = 0.75
             
             let lbl = SKLabelNode(text: foundItem.first?.name)
-            lbl.fontSize = 320
+            lbl.fontSize = 100
             lbl.numberOfLines = 0
             lbl.fontColor = UIColor.white
             lbl.fontName = "Helvetica-Bold"
-            lbl.position = CGPoint(x:1500,y:1000)
-            lbl.preferredMaxLayoutWidth = 2900
+            lbl.position = CGPoint(x: 10, y: 10)
+            lbl.preferredMaxLayoutWidth = 490
             lbl.horizontalAlignmentMode = .center
             lbl.verticalAlignmentMode = .center
             lbl.zRotation = .pi
@@ -246,7 +246,7 @@ class ViewController: UIViewController {
             node.geometry?.firstMaterial?.diffuse.wrapS = .repeat
             node.geometry?.firstMaterial?.diffuse.wrapS = .repeat
 
-            node.eulerAngles = SCNVector3(0,CGFloat(180.degreesToRadians),0)
+            node.eulerAngles = SCNVector3(0,CGFloat(160.degreesToRadians),0)
 
             node.position = SCNVector3(pointVector.x, 0, pointVector.z)
             self.sceneView.scene.rootNode.addChildNode(node)
@@ -302,7 +302,7 @@ class ViewController: UIViewController {
 //
 //                node.position = SCNVector3(0,0,-2)
 //                self.sceneView.scene.rootNode.addChildNode(node)
-                
+            
 //                let skScene = SKScene(size: CGSize(width: 2, height: 2))
 //                skScene.backgroundColor = UIColor.black.withAlphaComponent(1)
 //

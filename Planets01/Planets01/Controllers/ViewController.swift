@@ -195,6 +195,8 @@ class ViewController: UIViewController {
                 
                 let foundItem = planetObjects.filter { $0.name == (tappednode.name)?.replacingOccurrences(of: "Object", with: "") }
 
+                // why does this work??
+                // https://stackoverflow.com/questions/49600303/how-to-add-label-to-scnnode
                 let sk = SKScene(size: CGSize(width: 3000, height: 2000))
                 sk.backgroundColor = UIColor.clear
                 

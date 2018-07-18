@@ -11,6 +11,10 @@ struct planetaryObject {
     var position:SCNVector3
     var universeRotationSpeed:Double
     var rotationSpeed:Double
+    var axisTilt:Float
+    
+    var radius:String?
+    var distance:String?
     
     func createPlanetaryBody(geometry:SCNGeometry, diffuse:UIImage, specular:UIImage?, emission:UIImage?, normal:UIImage?, position:SCNVector3) -> SCNNode {
         let node = SCNNode()

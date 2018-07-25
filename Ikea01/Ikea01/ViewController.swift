@@ -1,9 +1,10 @@
 import UIKit
 import ARKit
 
-class ViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+class ViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, ARSCNViewDelegate {
     @IBOutlet weak var sceneView: ARSCNView!
     @IBOutlet weak var itemsCollectionView: UICollectionView!
+    @IBOutlet weak var planeDetected: UILabel!
     
     let configuration = ARWorldTrackingConfiguration()
     let itemsArray:[String] = ["cup", "vase", "boxing", "table"]
@@ -15,6 +16,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         self.configuration.planeDetection = .horizontal
         self.sceneView.session.run(configuration)
         self.registerGestureRecognizers()
+        self.sceneView.delegate = self
         
         self.itemsCollectionView.dataSource = self
         self.itemsCollectionView.delegate = self
@@ -60,10 +62,8 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     
     func addItem(hitTestResult:ARHitTestResult) {
         guard let selectedItem = self.selectedItem else { return }
-        print("selectedItem: \(selectedItem)")
         let scene = SCNScene(named: "Models.scnassets/\(selectedItem).scn")
         guard let node = scene?.rootNode.childNode(withName: selectedItem, recursively: false) else { return }
-//        let node = (scene?.rootNode.childNode(withName: selectedItem, recursively: false))!
         let transform = hitTestResult.worldTransform
         let thirdColumn = transform.columns.3
         node.position = SCNVector3(thirdColumn.x, thirdColumn.y, thirdColumn.z)
@@ -89,6 +89,16 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath)
         cell?.backgroundColor = .orange
+    }
+    
+    func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+        guard anchor is ARPlaneAnchor else { return }
+        DispatchQueue.main.async {
+            self.planeDetected.isHidden = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                self.planeDetected.isHidden = true
+            }
+        }
     }
 }
 

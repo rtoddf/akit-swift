@@ -42,8 +42,10 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     
     func addItem(hitTestResult:ARHitTestResult) {
         guard let selectedItem = self.selectedItem else { return }
-        let scene = SCNScene(named: "Models.scnassets/(selectedItem).scn")
-        let node = (scene?.rootNode.childNode(withName: selectedItem, recursively: false))!
+        print("selectedItem: \(selectedItem)")
+        let scene = SCNScene(named: "Models.scnassets/\(selectedItem).scn")
+        guard let node = scene?.rootNode.childNode(withName: selectedItem, recursively: false) else { return }
+//        let node = (scene?.rootNode.childNode(withName: selectedItem, recursively: false))!
         let transform = hitTestResult.worldTransform
         let thirdColumn = transform.columns.3
         node.position = SCNVector3(thirdColumn.x, thirdColumn.y, thirdColumn.z)

@@ -17,6 +17,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         self.sceneView.session.run(configuration)
         self.registerGestureRecognizers()
         self.sceneView.delegate = self
+        self.sceneView.autoenablesDefaultLighting = true
         
         self.itemsCollectionView.dataSource = self
         self.itemsCollectionView.delegate = self
@@ -30,8 +31,11 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     func registerGestureRecognizers() {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapped))
         let pinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(pinch))
+        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(rotate))
+        longPressRecognizer.minimumPressDuration = 0.1
         self.sceneView.addGestureRecognizer(tapGestureRecognizer)
         self.sceneView.addGestureRecognizer(pinchGestureRecognizer)
+        self.sceneView.addGestureRecognizer(longPressRecognizer)
     }
     
     @objc func tapped(sender:UITapGestureRecognizer) {
@@ -60,6 +64,27 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         }
     }
     
+    @objc func rotate(sender:UILongPressGestureRecognizer) {
+        let sceneView = sender.view as! ARSCNView
+        let holdLocation = sender.location(in: sceneView)
+        let hitTest = sceneView.hitTest(holdLocation)
+        
+        if !hitTest.isEmpty {
+            let result = hitTest.first
+            guard let node = result?.node else { return }
+            
+            if sender.state == .began {
+                let action = SCNAction.rotateBy(x: 0, y: CGFloat(360.degreesToRadians), z: 0, duration: 1)
+                let forever = SCNAction.repeatForever(action)
+                node.runAction(forever)
+            } else if sender.state == .ended {
+                node.removeAllActions()
+            }
+        }
+        
+        
+    }
+    
     func addItem(hitTestResult:ARHitTestResult) {
         guard let selectedItem = self.selectedItem else { return }
         let scene = SCNScene(named: "Models.scnassets/\(selectedItem).scn")
@@ -67,6 +92,12 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         let transform = hitTestResult.worldTransform
         let thirdColumn = transform.columns.3
         node.position = SCNVector3(thirdColumn.x, thirdColumn.y, thirdColumn.z)
+        
+        // fixing the center point of scn
+        if selectedItem == "table" {
+            self.centerPivot(for: node)
+        }
+        
         self.sceneView.scene.rootNode.addChildNode(node)
     }
 
@@ -99,6 +130,16 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                 self.planeDetected.isHidden = true
             }
         }
+    }
+
+    func centerPivot(for node: SCNNode) {
+        let min = node.boundingBox.min
+        let max = node.boundingBox.max
+        node.pivot = SCNMatrix4MakeTranslation(
+            min.x + (max.x - min.x)/2,
+            min.y + (max.y - min.y)/2,
+            min.z + (max.z - min.z)/2
+        )
     }
 }
 

@@ -13,6 +13,8 @@
 		00E06AA4211A3DA700587E13 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00E06AA3211A3DA700587E13 /* Assets.xcassets */; };
 		00E06AA7211A3DA700587E13 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 00E06AA5211A3DA700587E13 /* LaunchScreen.storyboard */; };
 		00E06AAF211A469F00587E13 /* big_buck_bunny.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 00E06AAE211A469F00587E13 /* big_buck_bunny.mp4 */; };
+		00E06AB2211A491200587E13 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E06AB1211A491200587E13 /* Extensions.swift */; };
+		00E06AB4211A594F00587E13 /* SKMultilineLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E06AB3211A594F00587E13 /* SKMultilineLabel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		00E06AA6211A3DA700587E13 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		00E06AA8211A3DA700587E13 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E06AAE211A469F00587E13 /* big_buck_bunny.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = big_buck_bunny.mp4; sourceTree = "<group>"; };
+		00E06AB1211A491200587E13 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		00E06AB3211A594F00587E13 /* SKMultilineLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKMultilineLabel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +60,7 @@
 		00E06A9B211A3DA500587E13 /* PlayVideo01 */ = {
 			isa = PBXGroup;
 			children = (
+				00E06AB0211A490200587E13 /* Helpers */,
 				00E06AAE211A469F00587E13 /* big_buck_bunny.mp4 */,
 				00E06A9C211A3DA500587E13 /* AppDelegate.swift */,
 				00E06A9E211A3DA500587E13 /* ViewController.swift */,
@@ -63,8 +68,17 @@
 				00E06AA3211A3DA700587E13 /* Assets.xcassets */,
 				00E06AA5211A3DA700587E13 /* LaunchScreen.storyboard */,
 				00E06AA8211A3DA700587E13 /* Info.plist */,
+				00E06AB3211A594F00587E13 /* SKMultilineLabel.swift */,
 			);
 			path = PlayVideo01;
+			sourceTree = "<group>";
+		};
+		00E06AB0211A490200587E13 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				00E06AB1211A491200587E13 /* Extensions.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -140,6 +154,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				00E06A9F211A3DA500587E13 /* ViewController.swift in Sources */,
+				00E06AB2211A491200587E13 /* Extensions.swift in Sources */,
+				00E06AB4211A594F00587E13 /* SKMultilineLabel.swift in Sources */,
 				00E06A9D211A3DA500587E13 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

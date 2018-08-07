@@ -23,8 +23,6 @@ class ViewController: UIViewController {
     }
 
     @objc func tapped(recognizer :UIGestureRecognizer) {
-        print("tap")
-        
         guard let currentFrame = self.sceneView.session.currentFrame else {
             return
         }
@@ -48,14 +46,42 @@ class ViewController: UIViewController {
 //
 //        self.sceneView.scene.rootNode.addChildNode(tvPlaneNode)
         
-        let videoNode = SKVideoNode(fileNamed: "big_buck_bunny.mp4")
-        videoNode.play()
+//        let videoNode = SKVideoNode(fileNamed: "big_buck_bunny.mp4")
+//        videoNode.play()
 
         let skScene = SKScene(size: CGSize(width: 1600, height: 900))
-        skScene.addChild(videoNode)
-
-        videoNode.position = CGPoint(x: skScene.size.width/2, y: skScene.size.height/2)
-        videoNode.size = skScene.size
+//        skScene.addChild(videoNode)
+//
+//        videoNode.position = CGPoint(x: skScene.size.width/2, y: skScene.size.height/2)
+//        videoNode.size = skScene.size
+        
+        skScene.backgroundColor = UIColor(white: 0.25, alpha: 0.25)
+        
+        let labelMargin:Int = 40
+        let labelWidth:Int = 750
+        let labelHeight:Int = 750
+        let labelPosition:CGPoint = CGPoint(x: CGFloat(labelWidth/2) + CGFloat(labelMargin), y: CGFloat(skScene.size.height) - CGFloat(labelMargin))
+        
+        let newTitleLabel = SKMultilineLabel(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sed lacus ornare, ornare sem et, tristique lectus. Vestibulum in fringilla enim. Duis fringilla lectus id placerat porttitor.", labelWidth: labelWidth, pos: labelPosition)
+        
+        print("x: \(CGFloat(labelWidth/2) + CGFloat(labelMargin))")
+        print("y: \(CGFloat(labelHeight/2) + CGFloat(labelMargin))")
+        
+//        newTitleLabel.labelHeight = labelHeight
+        newTitleLabel.alignment = .left
+        newTitleLabel.leading = 60
+//        newTitleLabel.fontColor = .red
+        newTitleLabel.fontSize = 60
+        skScene.addChild(newTitleLabel)
+        
+//        let titleLabel = SKLabelNode(fontNamed:"HelveticaNeue-Bold")
+//        titleLabel.horizontalAlignmentMode = .right
+//        titleLabel.fontSize = 36
+//        titleLabel.text = String("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sed lacus ornare, ornare sem et, tristique lectus")
+//        titleLabel.fontColor = .white
+//
+//        titleLabel.position = CGPoint(x: skScene.size.width/2, y: skScene.size.height/2)
+//        skScene.addChild(titleLabel)
 
         let tvPlane = SCNPlane(width: 1.0, height: 0.5265)
         tvPlane.firstMaterial?.diffuse.contents = skScene

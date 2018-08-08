@@ -56,8 +56,8 @@ class ViewController: UIViewController {
         let skScene = SKScene(size: CGSize(width: 1600, height: 900))
         skScene.addChild(videoNode)
 
-        videoNode.size = CGSize(width: 750, height: 750)
-        videoNode.position = CGPoint(x: skScene.size.width/2 + CGFloat(375), y: 550 - CGFloat(labelMargin))
+        videoNode.size = CGSize(width: (skScene.size.width/2) - (CGFloat(labelMargin) * 2), height: ((skScene.size.width/2) - (CGFloat(labelMargin) * 2)) * 9/16)
+        videoNode.position = CGPoint(x: skScene.size.width/2 + videoNode.size.width/2 + CGFloat(labelMargin), y: (skScene.size.height - videoNode.size.height/2) - CGFloat(labelMargin))
 //        videoNode.size = skScene.size
         skScene.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
         
@@ -66,8 +66,8 @@ class ViewController: UIViewController {
         
         let newTitleLabel = SKMultilineLabel(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sed lacus ornare, ornare sem et, tristique lectus. Vestibulum in fringilla enim. Duis fringilla lectus id placerat porttitor.", labelWidth: labelWidth, pos: labelPosition)
         
-        print("x: \(CGFloat(labelWidth/2) + CGFloat(labelMargin))")
-        print("y: \(CGFloat(labelHeight/2) + CGFloat(labelMargin))")
+//        print("x: \((skScene.size.height/2) - (CGFloat(labelMargin) * 2) - CGFloat(labelMargin))")
+        print("y: \((skScene.size.height - videoNode.size.height/2) - CGFloat(labelMargin))")
         
 //        newTitleLabel.labelHeight = labelHeight
         newTitleLabel.alignment = .left

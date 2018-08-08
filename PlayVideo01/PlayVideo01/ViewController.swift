@@ -26,23 +26,21 @@ class ViewController: UIViewController {
         guard let currentFrame = self.sceneView.session.currentFrame else {
             return
         }
-
-        let labelMargin:Int = 40
-        let labelWidth:Int = 750
-        let labelHeight:Int = 750
-        
         
         // skScene
         let skScene = SKScene(size: CGSize(width: 1600, height: 900))
         skScene.backgroundColor = .clear
 
+        let labelMargin:CGFloat = 40
+        let labelWidth = (skScene.size.width/2) - (labelMargin * 2)
+
         // textLabel
-        let labelPosition:CGPoint = CGPoint(x: CGFloat(labelWidth/2) + CGFloat(labelMargin), y: CGFloat(skScene.size.height) - CGFloat(labelMargin))
-        let newTitleLabel = SKMultilineLabel(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sed lacus ornare, ornare sem et, tristique lectus. Vestibulum in fringilla enim. Duis fringilla lectus id placerat porttitor.", labelWidth: Int((skScene.size.width/2) - (CGFloat(labelMargin) * 2)), pos: labelPosition)
+        let labelPosition:CGPoint = CGPoint(x: CGFloat(labelWidth/2) + labelMargin, y: CGFloat(skScene.size.height) - labelMargin)
+        let newTitleLabel = SKMultilineLabel(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sed lacus ornare, ornare sem et, tristique lectus. Vestibulum in fringilla enim. Duis fringilla lectus id placerat porttitor.", labelWidth: Int(labelWidth), pos: labelPosition)
         
         newTitleLabel.alignment = .left
-        newTitleLabel.leading = 60
         newTitleLabel.fontColor = .white
+        newTitleLabel.leading = 60
         newTitleLabel.fontSize = 60
         skScene.addChild(newTitleLabel)
         
@@ -53,8 +51,8 @@ class ViewController: UIViewController {
         // video
         let videoNode = SKVideoNode(fileNamed: "big_buck_bunny.mp4")
         videoNode.play()
-        videoNode.size = CGSize(width: (skScene.size.width/2) - (CGFloat(labelMargin) * 2), height: ((skScene.size.width/2) - (CGFloat(labelMargin) * 2)) * 9/16)
-        videoNode.position = CGPoint(x: skScene.size.width/2 + videoNode.size.width/2 + CGFloat(labelMargin), y: (skScene.size.height - videoNode.size.height/2) - CGFloat(labelMargin))
+        videoNode.size = CGSize(width: (skScene.size.width/2) - (labelMargin * 2), height: ((skScene.size.width/2) - (labelMargin * 2)) * 9/16)
+        videoNode.position = CGPoint(x: skScene.size.width/2 + videoNode.size.width/2 + labelMargin, y: (skScene.size.height - videoNode.size.height/2) - labelMargin)
         skScene.addChild(videoNode)
         
         let videoPlane = SCNPlane(width: 1.0, height: 0.5265)
@@ -74,7 +72,7 @@ class ViewController: UIViewController {
         let request = URLRequest(url: URL(string: "http://www.rtodd.net/")!)
         webView.loadRequest(request)
 
-        let browserPlane = SCNPlane(width: 0.5, height: 0.5 * 9/16)
+        let browserPlane = SCNPlane(width: 0.45, height: 0.45 * 9/16)
 
         browserPlane.firstMaterial?.diffuse.contents = webView
         browserPlane.firstMaterial?.isDoubleSided = true
@@ -85,6 +83,7 @@ class ViewController: UIViewController {
         browserTranslation.columns.3.z = -1.5
 
         let browserPlaneNode = SCNNode(geometry: browserPlane)
+        print("currentFrame.camera.transform: \(currentFrame.camera.transform)")
         browserPlaneNode.simdTransform = matrix_multiply(currentFrame.camera.transform, browserTranslation)
         browserPlaneNode.eulerAngles = SCNVector3(0,0,0)
 

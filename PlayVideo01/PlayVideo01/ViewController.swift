@@ -83,7 +83,6 @@ class ViewController: UIViewController {
         browserTranslation.columns.3.z = -1.5
 
         let browserPlaneNode = SCNNode(geometry: browserPlane)
-        print("currentFrame.camera.transform: \(currentFrame.camera.transform)")
         browserPlaneNode.simdTransform = matrix_multiply(currentFrame.camera.transform, browserTranslation)
         browserPlaneNode.eulerAngles = SCNVector3(0,0,0)
 

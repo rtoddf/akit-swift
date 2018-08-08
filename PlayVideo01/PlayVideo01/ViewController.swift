@@ -46,20 +46,22 @@ class ViewController: UIViewController {
 //
 //        self.sceneView.scene.rootNode.addChildNode(tvPlaneNode)
         
-//        let videoNode = SKVideoNode(fileNamed: "big_buck_bunny.mp4")
-//        videoNode.play()
-
-        let skScene = SKScene(size: CGSize(width: 1600, height: 900))
-//        skScene.addChild(videoNode)
-//
-//        videoNode.position = CGPoint(x: skScene.size.width/2, y: skScene.size.height/2)
-//        videoNode.size = skScene.size
-        
-        skScene.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
-        
         let labelMargin:Int = 40
         let labelWidth:Int = 750
         let labelHeight:Int = 750
+        
+        let videoNode = SKVideoNode(fileNamed: "big_buck_bunny.mp4")
+        videoNode.play()
+
+        let skScene = SKScene(size: CGSize(width: 1600, height: 900))
+        skScene.addChild(videoNode)
+
+        videoNode.size = CGSize(width: 750, height: 750)
+        videoNode.position = CGPoint(x: skScene.size.width/2 + CGFloat(375), y: 550 - CGFloat(labelMargin))
+//        videoNode.size = skScene.size
+        skScene.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
+        
+        
         let labelPosition:CGPoint = CGPoint(x: CGFloat(labelWidth/2) + CGFloat(labelMargin), y: CGFloat(skScene.size.height) - CGFloat(labelMargin))
         
         let newTitleLabel = SKMultilineLabel(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sed lacus ornare, ornare sem et, tristique lectus. Vestibulum in fringilla enim. Duis fringilla lectus id placerat porttitor.", labelWidth: labelWidth, pos: labelPosition)

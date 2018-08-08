@@ -61,28 +61,31 @@ class ViewController: UIViewController {
         videoPlane.firstMaterial?.diffuse.contents = skScene
         videoPlane.firstMaterial?.isDoubleSided = true
 
-        let videoPlaneNode = SCNNode(geometry: videoPlane)
         var translation = matrix_identity_float4x4
         translation.columns.3.z = -1.5
+        
+        let videoPlaneNode = SCNNode(geometry: videoPlane)
         videoPlaneNode.simdTransform = matrix_multiply(currentFrame.camera.transform, translation)
         videoPlaneNode.eulerAngles = SCNVector3(Double.pi,0,0)
         self.sceneView.scene.rootNode.addChildNode(videoPlaneNode)
         
         // browser
-        let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: 1024, height: 768))
+        let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: 500, height: 500))
         let request = URLRequest(url: URL(string: "http://www.rtodd.net/")!)
-
         webView.loadRequest(request)
 
-        let browserPlane = SCNPlane(width: 1.0, height: 0.5265)
+        let browserPlane = SCNPlane(width: 0.5, height: 0.5 * 9/16)
+
         browserPlane.firstMaterial?.diffuse.contents = webView
         browserPlane.firstMaterial?.isDoubleSided = true
-        let browserPlaneNode = SCNNode(geometry: browserPlane)
 
         var browserTranslation = matrix_identity_float4x4
+        browserTranslation.columns.3.x = 0.18
+        browserTranslation.columns.3.y = 0.25
         browserTranslation.columns.3.z = -1.5
 
-        browserPlaneNode.simdTransform = matrix_multiply(currentFrame.camera.transform, translation)
+        let browserPlaneNode = SCNNode(geometry: browserPlane)
+        browserPlaneNode.simdTransform = matrix_multiply(currentFrame.camera.transform, browserTranslation)
         browserPlaneNode.eulerAngles = SCNVector3(0,0,0)
 
         self.sceneView.scene.rootNode.addChildNode(browserPlaneNode)

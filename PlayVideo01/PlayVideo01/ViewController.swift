@@ -55,7 +55,7 @@ class ViewController: UIViewController {
 //        videoNode.position = CGPoint(x: skScene.size.width/2, y: skScene.size.height/2)
 //        videoNode.size = skScene.size
         
-        skScene.backgroundColor = UIColor(white: 0.25, alpha: 0.25)
+        skScene.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
         
         let labelMargin:Int = 40
         let labelWidth:Int = 750

@@ -11,7 +11,7 @@
  self.addChild(multiLabel)
  */
 
-https://gist.github.com/craiggrummitt/03bfa93c07e247ee9358
+// https://gist.github.com/craiggrummitt/03bfa93c07e247ee9358
 
 import SpriteKit
 

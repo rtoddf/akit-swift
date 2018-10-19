@@ -27,80 +27,68 @@ class ViewController: UIViewController {
             return
         }
         
-//        let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: 1024, height: 768))
-//        let request = URLRequest(url: URL(string: "http://www.rtodd.net/")!)
-//
-//        webView.loadRequest(request)
-//
-//        let tvPlane = SCNPlane(width: 1.0, height: 0.75)
-//        tvPlane.firstMaterial?.diffuse.contents = webView
-//        tvPlane.firstMaterial?.isDoubleSided = true
-//
-//        let tvPlaneNode = SCNNode(geometry: tvPlane)
-//
-//        var translation = matrix_identity_float4x4
-//        translation.columns.3.z = -1.5
-//
-//        tvPlaneNode.simdTransform = matrix_multiply(currentFrame.camera.transform, translation)
-//        tvPlaneNode.eulerAngles = SCNVector3(0,0,0)
-//
-//        self.sceneView.scene.rootNode.addChildNode(tvPlaneNode)
-        
-        let labelMargin:Int = 40
-        let labelWidth:Int = 750
-        let labelHeight:Int = 750
-        
-        let videoNode = SKVideoNode(fileNamed: "big_buck_bunny.mp4")
-        videoNode.play()
-
+        // skScene
         let skScene = SKScene(size: CGSize(width: 1600, height: 900))
-        skScene.addChild(videoNode)
-
-        videoNode.size = CGSize(width: (skScene.size.width/2) - (CGFloat(labelMargin) * 2), height: ((skScene.size.width/2) - (CGFloat(labelMargin) * 2)) * 9/16)
-        videoNode.position = CGPoint(x: skScene.size.width/2 + videoNode.size.width/2 + CGFloat(labelMargin), y: (skScene.size.height - videoNode.size.height/2) - CGFloat(labelMargin))
-//        videoNode.size = skScene.size
-//        UIColor(white: 0.5, alpha: 0.5)
         skScene.backgroundColor = .clear
+
+        let labelMargin:CGFloat = 40
+        let labelWidth = (skScene.size.width/2) - (labelMargin * 2)
+
+        // textLabel
+        let labelPosition:CGPoint = CGPoint(x: CGFloat(labelWidth/2) + labelMargin, y: CGFloat(skScene.size.height) - labelMargin)
+        let newTitleLabel = SKMultilineLabel(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sed lacus ornare, ornare sem et, tristique lectus. Vestibulum in fringilla enim. Duis fringilla lectus id placerat porttitor.", labelWidth: Int(labelWidth), pos: labelPosition)
         
-        
-        let labelPosition:CGPoint = CGPoint(x: CGFloat(labelWidth/2) + CGFloat(labelMargin), y: CGFloat(skScene.size.height) - CGFloat(labelMargin))
-        
-        let newTitleLabel = SKMultilineLabel(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sed lacus ornare, ornare sem et, tristique lectus. Vestibulum in fringilla enim. Duis fringilla lectus id placerat porttitor.", labelWidth: Int((skScene.size.width/2) - (CGFloat(labelMargin) * 2)), pos: labelPosition)
-        
-//        print("x: \((skScene.size.height/2) - (CGFloat(labelMargin) * 2) - CGFloat(labelMargin))")
-//        print("y: \((skScene.size.height - videoNode.size.height/2) - CGFloat(labelMargin))")
-        
-//        newTitleLabel.labelHeight = labelHeight
         newTitleLabel.alignment = .left
-        newTitleLabel.leading = 60
         newTitleLabel.fontColor = .white
-//        newTitleLabel.fontColor = .red
+        newTitleLabel.leading = 60
         newTitleLabel.fontSize = 60
         skScene.addChild(newTitleLabel)
         
-//        let titleLabel = SKLabelNode(fontNamed:"HelveticaNeue-Bold")
-//        titleLabel.horizontalAlignmentMode = .right
-//        titleLabel.fontSize = 36
-//        titleLabel.text = String("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sed lacus ornare, ornare sem et, tristique lectus")
-//        titleLabel.fontColor = .white
-//
-//        titleLabel.position = CGPoint(x: skScene.size.width/2, y: skScene.size.height/2)
-//        skScene.addChild(titleLabel)
+        // printing stuff out
+        // print("x: \((skScene.size.height/2) - (CGFloat(labelMargin) * 2) - CGFloat(labelMargin))")
+        // print("y: \((skScene.size.height - videoNode.size.height/2) - CGFloat(labelMargin))")
 
-        let tvPlane = SCNPlane(width: 1.0, height: 0.5265)
-        tvPlane.firstMaterial?.diffuse.contents = skScene
-        tvPlane.firstMaterial?.isDoubleSided = true
-
-        let tvPlaneNode = SCNNode(geometry: tvPlane)
+        // video
+        let videoNode = SKVideoNode(fileNamed: "big_buck_bunny.mp4")
+        videoNode.play()
+        videoNode.size = CGSize(width: (skScene.size.width/2) - (labelMargin * 2), height: ((skScene.size.width/2) - (labelMargin * 2)) * 9/16)
+        videoNode.position = CGPoint(x: skScene.size.width/2 + videoNode.size.width/2 + labelMargin, y: (skScene.size.height - videoNode.size.height/2) - labelMargin)
+        skScene.addChild(videoNode)
+        
+        let videoPlane = SCNPlane(width: 1.0, height: 0.5265)
+        videoPlane.firstMaterial?.diffuse.contents = skScene
+        videoPlane.firstMaterial?.isDoubleSided = true
 
         var translation = matrix_identity_float4x4
         translation.columns.3.z = -1.5
+        
+        let videoPlaneNode = SCNNode(geometry: videoPlane)
+        videoPlaneNode.simdTransform = matrix_multiply(currentFrame.camera.transform, translation)
+        videoPlaneNode.eulerAngles = SCNVector3(Double.pi,0,0)
+        self.sceneView.scene.rootNode.addChildNode(videoPlaneNode)
+        
+        // browser
+        let webView = UIWebView(frame: CGRect(x: 0, y: 0, width: 500, height: 500))
+        let request = URLRequest(url: URL(string: "http://www.rtodd.net/")!)
+        webView.loadRequest(request)
 
-        tvPlaneNode.simdTransform = matrix_multiply(currentFrame.camera.transform, translation)
-        tvPlaneNode.eulerAngles = SCNVector3(Double.pi,0,0)
+        let browserPlane = SCNPlane(width: 0.45, height: 0.45 * 9/16)
 
-        self.sceneView.scene.rootNode.addChildNode(tvPlaneNode)
+        browserPlane.firstMaterial?.diffuse.contents = webView
+        browserPlane.firstMaterial?.isDoubleSided = true
+
+        var browserTranslation = matrix_identity_float4x4
+        browserTranslation.columns.3.x = 0.18
+        browserTranslation.columns.3.y = 0.25
+        browserTranslation.columns.3.z = -1.5
+
+        let browserPlaneNode = SCNNode(geometry: browserPlane)
+        browserPlaneNode.simdTransform = matrix_multiply(currentFrame.camera.transform, browserTranslation)
+        browserPlaneNode.eulerAngles = SCNVector3(0,0,0)
+
+        self.sceneView.scene.rootNode.addChildNode(browserPlaneNode)
     }
     
 }
 
+//        UIColor(white: 0.5, alpha: 0.5)
